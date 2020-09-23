@@ -2,6 +2,7 @@ FROM ubuntu:19.10
 
 VOLUME /data
 VOLUME /config
+VOLUME /incomplete
 
 ARG DOCKERIZE_ARCH=amd64
 ARG DOCKERIZE_VERSION=v0.6.1
@@ -22,7 +23,7 @@ RUN apt update \
     && unzip release.zip -d /opt/transmission-ui/ \
     && rm release.zip \
     && mkdir /opt/transmission-ui/transmission-web-control \
-    && mkdir -p /var/incomplete \
+    && mkdir -p /incomplete/incomplete \
     && curl -sL `curl -s https://api.github.com/repos/ronggang/transmission-web-control/releases/latest | jq --raw-output '.tarball_url'` | tar -C /opt/transmission-ui/transmission-web-control/ --strip-components=2 -xz \
     && ln -s /usr/share/transmission/web/style /opt/transmission-ui/transmission-web-control \
     && ln -s /usr/share/transmission/web/images /opt/transmission-ui/transmission-web-control \
@@ -69,7 +70,7 @@ ENV OPENVPN_USERNAME=**None** \
     TRANSMISSION_ENCRYPTION=1 \
     TRANSMISSION_IDLE_SEEDING_LIMIT=30 \
     TRANSMISSION_IDLE_SEEDING_LIMIT_ENABLED=false \
-    TRANSMISSION_INCOMPLETE_DIR=/var/incomplete \
+    TRANSMISSION_INCOMPLETE_DIR=/incomplete/incomplete \
     TRANSMISSION_INCOMPLETE_DIR_ENABLED=true \
     TRANSMISSION_LPD_ENABLED=false \
     TRANSMISSION_MAX_PEERS_GLOBAL=200 \
